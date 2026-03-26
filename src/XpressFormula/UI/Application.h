@@ -10,6 +10,7 @@
 #include "PlotSettings.h"
 #include "../Core/ViewTransform.h"
 
+#include <chrono>
 #include <cstdint>
 #include <d3d11.h>
 #include <array>
@@ -143,6 +144,8 @@ private:
     std::string               m_exportStatus;
     std::future<UpdateCheckResult> m_updateCheckFuture;
     bool                      m_updateCheckInProgress = false;
+    bool                      m_startupCheckDone = false;
+    std::chrono::steady_clock::time_point m_startupTime;
     bool                      m_updateAvailable = false;
     bool                      m_updateNoticeDismissed = false;
     bool                      m_versionDetailsExpanded = false;

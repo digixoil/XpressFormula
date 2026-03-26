@@ -333,9 +333,10 @@ bool Application::initialize(HINSTANCE hInstance, int width, int height) {
     defaultEntry.parse();
     m_formulas.push_back(std::move(defaultEntry));
 
-    // Start a non-blocking startup update check. The result is polled in the render loop so we
-    // avoid any startup pause caused by network latency.
-    startUpdateCheck(false);
+    // Record startup time so we can defer the automatic update check.
+    // Delaying the network call avoids triggering antivirus heuristics that flag
+    // executables making outbound connections immediately after launch.
+    m_startupTime = std::chrono::steady_clock::now();
 
     return true;
 }
@@ -425,6 +426,16 @@ int Application::run() {
 // ---- per-frame render -------------------------------------------------------
 
 void Application::renderFrame() {
+    // Deferred startup update check: wait ~60 seconds after launch before contacting the
+    // network. This avoids antivirus heuristics that flag immediate outbound connections.
+    if (!m_startupCheckDone && !m_updateCheckInProgress) {
+        const auto elapsed = std::chrono::steady_clock::now() - m_startupTime;
+        if (elapsed >= std::chrono::seconds(60)) {
+            m_startupCheckDone = true;
+            startUpdateCheck(false);
+        }
+    }
+
     // Poll async update-check completion before building the UI so the sidebar can show any
     // newly available result in the same visible frame.
     pollUpdateCheckResult();
@@ -641,6 +652,7 @@ void Application::startUpdateCheck(bool manualRequest) {
     }
 
     m_updateCheckInProgress = true;
+    m_startupCheckDone = true; // Prevent deferred auto-check from firing again
     m_updateStatus = manualRequest ? "Checking GitHub releases..." : "Checking for updates in background...";
     m_redrawRequested = true;
 
