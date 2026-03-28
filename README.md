@@ -24,9 +24,11 @@ The app supports:
 
 ## Screenshots
 
-| Formula View | Surface/Heatmap View |
-|---|---|
-| ![XpressFormula screenshot 1](doc/images/image-01.png) | ![XpressFormula screenshot 2](doc/images/image-02.png) |
+![Formula View](doc/images/image-01.png)
+
+## Demo videos
+
+[![Watch the Demo video](doc/images/image-02.png)](https://www.youtube.com/watch?v=lxSqbm8tIos)
 
 ## Project Goals
 
