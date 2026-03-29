@@ -24,11 +24,11 @@ The app supports:
 
 ## Screenshots
 
-![Formula View](doc/images/image-01.png)
+![Formula View](doc/images/image-04.png)
 
 ## Demo videos
 
-[![Watch the Demo video](doc/images/image-02.png)](https://www.youtube.com/watch?v=lxSqbm8tIos)
+[![Watch the Demo video](doc/images/image-03.png)](https://www.youtube.com/watch?v=lxSqbm8tIos)
 
 ## Project Goals
 
